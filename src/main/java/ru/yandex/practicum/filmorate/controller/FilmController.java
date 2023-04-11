@@ -40,7 +40,7 @@ public class FilmController {
         if (film.getId() != null) {
             if (films.containsKey(film.getId())) {
                 log.warn("Фильм с id {} уже добавлен в базу.", film.getId());
-                throw new ValidationException("Фильм с id " + film.getId() + " уже добавлен в базу");
+                throw new ValidationException("Фильм с id " + film.getId() + " уже добавлен в базу.");
             }
         }
 
