@@ -12,7 +12,7 @@ public class CustomDurationDeserializer extends JsonDeserializer<Duration> {
 
     @Override
     public Duration deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-       if (jsonParser.getValueAsLong() <0) {
+       if (jsonParser.getValueAsLong() < 0) {
            return Duration.ZERO;
        }
 
