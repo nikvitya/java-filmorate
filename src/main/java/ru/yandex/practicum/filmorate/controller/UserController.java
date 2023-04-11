@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User update( @RequestBody User user) throws ValidationException {
+    public User update(@RequestBody User user) throws ValidationException {
         if (user.getEmail().isBlank() || !user.getEmail().contains("@") || user.getLogin().isBlank() || user.getBirthday().isAfter(localDateNow)) {
             log.warn("Поля пользователя введены неверно");
             throw new ValidationException("Проверьте поля пользователя!");
