@@ -19,7 +19,7 @@ public class FilmController {
 //    дата релиза — не раньше 28 декабря 1895 года;
 //    продолжительность фильма должна быть положительной.
     private int id = 1;
-    private final LocalDate FIRST_FILM = LocalDate.of(1895,12,28);
+    private final LocalDate firstFilm = LocalDate.of(1895,12,28);
     private Map<Integer, Film> films = new HashMap<>();
 
 
@@ -32,7 +32,7 @@ public class FilmController {
     @PostMapping()
     public Film create(@RequestBody Film film) throws ValidationException {
 
-        if (film.getName().isBlank() || film.getDescription().length()> 200 || film.getReleaseDate().isBefore(FIRST_FILM) || film.getDuration() < 0 ) {
+        if (film.getName().isBlank() || film.getDescription().length() > 200 || film.getReleaseDate().isBefore(firstFilm) || film.getDuration() < 0) {
             log.warn("Поля фильма введены неверно");
             throw new ValidationException("Проверьте поля фильма");
         }
@@ -52,7 +52,7 @@ public class FilmController {
 
     @PutMapping()
     public Film update(@RequestBody Film film) throws ValidationException {
-        if (film.getName().isBlank() || film.getDescription().length()> 200 || film.getReleaseDate().isBefore(FIRST_FILM) || film.getDuration() < 0 ) {
+        if (film.getName().isBlank() || film.getDescription().length() > 200 || film.getReleaseDate().isBefore(firstFilm) || film.getDuration() < 0) {
             log.warn("Поля фильма введены неверно");
             throw new ValidationException("Проверьте поля фильма");
         }
