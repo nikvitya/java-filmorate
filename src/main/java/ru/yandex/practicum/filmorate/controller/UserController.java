@@ -18,7 +18,7 @@ public class UserController {
 //   имя для отображения может быть пустым — в таком случае будет использован логин;
 //   дата рождения не может быть в будущем.
     private int id = 1;
-    private final LocalDate NOW = LocalDate.now();
+    private final LocalDate localDateNow = LocalDate.now();
     private Map<Integer, User> users = new HashMap<>();
 
     @GetMapping
@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @PostMapping
-    public User create( @RequestBody User user) throws ValidationException {
-        if (user.getEmail().isEmpty()|| !user.getEmail().contains("@") || user.getLogin().isBlank() || user.getBirthday().isAfter(NOW)) {
+    public User create(@RequestBody User user) throws ValidationException {
+        if (user.getEmail().isEmpty() || !user.getEmail().contains("@") || user.getLogin().isBlank() || user.getBirthday().isAfter(localDateNow)) {
             log.warn("Поля пользователя введены неверно");
             throw new ValidationException("Проверьте поля пользователя!");
         }
@@ -54,7 +54,7 @@ public class UserController {
 
     @PutMapping
     public User update( @RequestBody User user) throws ValidationException {
-        if (user.getEmail().isBlank() || !user.getEmail().contains("@") || user.getLogin().isBlank() || user.getBirthday().isAfter(NOW)) {
+        if (user.getEmail().isBlank() || !user.getEmail().contains("@") || user.getLogin().isBlank() || user.getBirthday().isAfter(localDateNow)) {
             log.warn("Поля пользователя введены неверно");
             throw new ValidationException("Проверьте поля пользователя!");
         }
