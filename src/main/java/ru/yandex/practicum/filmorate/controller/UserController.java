@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -13,22 +14,18 @@ import java.util.*;
 @RequestMapping("/users")
 @Slf4j
 public class UserController {
-//   электронная почта не может быть пустой и должна содержать символ @;
-//   логин не может быть пустым и содержать пробелы;
-//   имя для отображения может быть пустым — в таком случае будет использован логин;
-//   дата рождения не может быть в будущем.
     private int id = 1;
     private final LocalDate localDateNow = LocalDate.now();
     private Map<Integer, User> users = new HashMap<>();
 
     @GetMapping
-    public Collection<User> showAll() {
+    public ArrayList<User> showAll() {
         log.info("Получен запрос на показ всех пользователей.В базе {} пользователей.", users.size());
-        return users.values();
+        return new ArrayList<>(users.values());
     }
 
     @PostMapping
-    public User create(@RequestBody User user) throws ValidationException {
+    public User create(@Valid @RequestBody User user) throws ValidationException {
         if (user.getEmail().isEmpty() || !user.getEmail().contains("@") || user.getLogin().isBlank() || user.getBirthday().isAfter(localDateNow)) {
             log.warn("Поля пользователя введены неверно");
             throw new ValidationException("Проверьте поля пользователя!");
@@ -53,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@RequestBody User user) throws ValidationException {
+    public User update(@Valid @RequestBody User user) throws ValidationException {
         if (user.getEmail().isBlank() || !user.getEmail().contains("@") || user.getLogin().isBlank() || user.getBirthday().isAfter(localDateNow)) {
             log.warn("Поля пользователя введены неверно");
             throw new ValidationException("Проверьте поля пользователя!");

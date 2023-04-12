@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -14,23 +15,19 @@ import java.util.*;
 @RequestMapping("/films")
 @Slf4j
 public class FilmController {
-//    название не может быть пустым;
-//    максимальная длина описания — 200 символов;
-//    дата релиза — не раньше 28 декабря 1895 года;
-//    продолжительность фильма должна быть положительной.
     private int id = 1;
     private final LocalDate firstFilm = LocalDate.of(1895,12,28);
     private Map<Integer, Film> films = new HashMap<>();
 
 
     @GetMapping()
-    public Collection<Film> showAll() {
+    public ArrayList<Film> showAll() {
         log.info("Получен запрос на показ всех фильмов.В базе {} фильмов.", films.size());
-        return films.values();
+        return new ArrayList<>(films.values());
     }
 
-    @PostMapping()
-    public Film create(@RequestBody Film film) throws ValidationException {
+    @PostMapping
+    public Film create(@Valid @RequestBody Film film) throws ValidationException {
 
         if (film.getName().isBlank() || film.getDescription().length() > 200 || film.getReleaseDate().isBefore(firstFilm) || film.getDuration() < 0) {
             log.warn("Поля фильма введены неверно");
@@ -50,8 +47,8 @@ public class FilmController {
         return film;
     }
 
-    @PutMapping()
-    public Film update(@RequestBody Film film) throws ValidationException {
+    @PutMapping
+    public Film update(@Valid @RequestBody Film film) throws ValidationException {
         if (film.getName().isBlank() || film.getDescription().length() > 200 || film.getReleaseDate().isBefore(firstFilm) || film.getDuration() < 0) {
             log.warn("Поля фильма введены неверно");
             throw new ValidationException("Проверьте поля фильма");
@@ -73,7 +70,7 @@ public class FilmController {
         films.clear();
     }
 
-    public int idGenerator() {
+    private int idGenerator() {
         return id++;
     }
 
