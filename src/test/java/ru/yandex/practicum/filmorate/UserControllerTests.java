@@ -18,7 +18,7 @@ import java.time.LocalDate;
 
 
 @SpringBootTest
-class UserControllerTest {
+class UserControllerTests {
     UserController userController;
     User user;
 
