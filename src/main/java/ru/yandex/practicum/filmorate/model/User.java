@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 
 import javax.validation.constraints.Email;
 import java.time.LocalDate;
