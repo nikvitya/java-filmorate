@@ -15,10 +15,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class UserService {
-//    Создайте UserService, который будет отвечать за такие операции с пользователями, как добавление в друзья,
-//    удаление из друзей, вывод списка общих друзей.
-//    Пока пользователям не надо одобрять заявки в друзья — добавляем сразу.
-//    То есть если Лена стала другом Саши, то это значит, что Саша теперь друг Лены.
     private final UserStorage inMemoryUserStorage;
 
     public UserService(UserStorage inMemoryUserStorage) {
@@ -50,23 +46,12 @@ public class UserService {
     public List<User> getFriends(Integer id) {
         User user = inMemoryUserStorage.getUserById(id);
 
-//        List<User> friends = new ArrayList<>();
-//
-//        Set<Integer> friendId = user.getFriendsId();
-//        for (Integer idFriend : friendId) {
-//            User friend = inMemoryUserStorage.getUserById(idFriend);
-//            if (friend != null) {
-//                friends.add(friend);
-//            }
-//        }
-//
-//        return friends;
-
-       return user.getFriendsId().stream().map(inMemoryUserStorage::getUserById).collect(Collectors.toList());
+       return user.getFriendsId().stream()
+               .map(inMemoryUserStorage::getUserById)
+               .collect(Collectors.toList());
     }
 
     public List<User> getCommonFriends(Integer id, Integer otherId) {
-
 
         List<User> userFriends = getFriends(id);
         List<User> otherUserFriends = getFriends(otherId);
@@ -79,12 +64,9 @@ public class UserService {
         }
 
         return commonFriends;
-
     }
-
 
     public User getUserById(Integer id) {
         return inMemoryUserStorage.getUserById(id);
     }
-
 }

@@ -7,16 +7,16 @@ import java.util.List;
 
 public interface UserStorage {
 
-    public List<User> showAll();
+    List<User> showAll();
 
-    public User create(User user);
+    User create(User user);
 
-    public User update(User user);
+    User update(User user);
 
-    public void deleteAll();
+    void deleteAll();
 
-    public User deleteUserById(Integer id);
+    User deleteUserById(Integer id);
 
-    public User getUserById(Integer id);
+    User getUserById(Integer id);
 
 }

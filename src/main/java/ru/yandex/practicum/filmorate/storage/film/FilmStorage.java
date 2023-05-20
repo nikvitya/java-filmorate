@@ -9,16 +9,15 @@ import java.util.List;
 
 public interface FilmStorage {
 
-    public List<Film> showAll();
+    List<Film> showAll();
 
-    public Film create(Film film) throws ValidationException;
+    Film create(Film film);
 
-    public Film update(Film film) throws ValidationException;
+    Film update(Film film);
 
-    public void deleteAll();
+    void deleteAll();
 
-    public Film deleteFilmById(Integer id);
+    Film deleteFilmById(Integer id);
 
-    public Film getFilmById(Integer id);
-
+    Film getFilmById(Integer id);
 }
