@@ -14,8 +14,6 @@ import java.util.*;
 @RequestMapping("/users")
 @Slf4j
 public class UserController {
-
-
     private final InMemoryUserStorage inMemoryUserStorage;
     private final UserService userService;
 
@@ -41,7 +39,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public void delete() {
+    public void deleteAll() {
         inMemoryUserStorage.deleteAll();
     }
 
