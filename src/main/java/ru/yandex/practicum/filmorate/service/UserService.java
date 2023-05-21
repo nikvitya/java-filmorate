@@ -53,6 +53,10 @@ public class UserService {
 
     public List<User> getCommonFriends(Integer id, Integer otherId) {
 
+//        List<User> commonFriends2 = userFriends.stream()
+//                .filter(otherUserFriends::contains)
+//                .collect(Collectors.toList());
+
         List<User> userFriends = getFriends(id);
         List<User> otherUserFriends = getFriends(otherId);
 
