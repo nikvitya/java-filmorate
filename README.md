@@ -1,6 +1,6 @@
 # java-filmorate
 Схема базы данных:
-<img src="E:/Видео/Java ЯП/java-filmorate2.png"/>
+![Изображение](E:/Видео/Java ЯП/java-filmorate2.png)
 <https://dbdiagram.io/d/646b6874dca9fb07c487cc84>  
 ### Примеры запросов:  
 **Для фильмов:**   
