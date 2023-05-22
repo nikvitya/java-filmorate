@@ -1,6 +1,6 @@
 # java-filmorate
 Схема базы данных:  
-![](https://dbdiagram.io/d/646b6874dca9fb07c487cc84.png)
+
 <https://dbdiagram.io/d/646b6874dca9fb07c487cc84>
 ### Примеры запросов:  
 **Для фильмов:**   
