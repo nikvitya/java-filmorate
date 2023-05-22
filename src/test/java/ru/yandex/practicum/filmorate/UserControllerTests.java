@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.HttpStatus;
@@ -19,13 +20,13 @@ import java.time.LocalDate;
 
 @SpringBootTest
 class UserControllerTests {
+    @Autowired
     UserController userController;
     User user;
 
 
     @BeforeEach
     void setUp() {
-        userController = new UserController();
         user = User.builder()
                 .id(1)
                 .name("nisi eiusmod")

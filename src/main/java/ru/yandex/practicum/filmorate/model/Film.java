@@ -7,7 +7,8 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.time.LocalDate;
-
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -22,5 +23,6 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
 
+    private final Set<Integer> userIdsWhoPutLike = new HashSet<>();
 
 }

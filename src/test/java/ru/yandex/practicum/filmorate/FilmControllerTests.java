@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,15 @@ import java.time.LocalDate;
 
 @SpringBootTest
 class FilmControllerTests {
+
+	@Autowired
 	FilmController filmController;
+
 	Film film;
 
 
 	@BeforeEach
 	void setUp() {
-		filmController = new FilmController();
 		film = Film.builder()
 				.id(1)
 				.name("nisi eiusmod")
