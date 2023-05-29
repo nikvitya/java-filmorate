@@ -85,7 +85,7 @@ public class UserDbStorage implements UserStorage {
         validateUser(user);
 
         String sqlQuery = "UPDATE users SET name = ?, email = ?, login = ?, birthday = ? WHERE id = ?";
-        int count=  jdbcTemplate.update(sqlQuery, user.getName(), user.getEmail(), user.getLogin(), user.getBirthday(), user.getId());
+        int count =  jdbcTemplate.update(sqlQuery, user.getName(), user.getEmail(), user.getLogin(), user.getBirthday(), user.getId());
 
         if (count != 1) {
             throw new NotFoundException("Невозможно обновить фильм с id= " + user.getId());
