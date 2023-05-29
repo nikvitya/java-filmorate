@@ -20,7 +20,7 @@ public class GenreControllerTest {
 
     @Test
     void testShowAll() {
-        List<Genre> genreList= genreController.showAll();
+        List<Genre> genreList = genreController.showAll();
         assertEquals(genreList.size(),6);
     }
 
