@@ -88,7 +88,7 @@ public class InMemoryUserStorage implements UserStorage {
             throw new NotFoundException("Пользователя с id=" + id + " нет в базе");
         }
 
-       // return users.remove(id);
+       users.remove(id);
 
     }
 

@@ -92,7 +92,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new NotFoundException("Фильм с id " + id + " нет в базе");
         }
 
-        //return films.remove(id);
+        films.remove(id);
     }
 
 

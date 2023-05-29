@@ -33,7 +33,5 @@ public class FilmMapper implements RowMapper<Film> {
         RatingMpa mpa = ratingMpaDbStorage.getRatingMpaById(rs.getInt("rating_id"));
 
         return new Film(id,name,description,releaseDate,duration,mpa,genres);
-
-//        private final Set<Integer> userIdsWhoPutLike = new LinkedHashSet<>();
     }
 }

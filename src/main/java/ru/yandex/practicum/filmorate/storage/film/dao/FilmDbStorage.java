@@ -84,41 +84,33 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film getFilmById(Integer id) {
         try {
-            String sql = "select * from films where id = ?";
             log.info("Получен запрос на показ фильма с id= {}", id);
+            String sql = "select * from films where id = ?";
             return jdbcTemplate.queryForObject(sql, filmMapper, id);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("Фильм с id= " + id + " не найден");
         }
 
-//        log.info("Получен запрос на показ фильма с id= {}", id);
-//
-//        String sql = "select * from films where id = ?";
-//        Film film = jdbcTemplate.queryForObject(sql,filmMapper,id);
-//
-//        if (film == null) {
-//            log.warn("Фильм невозможно получить , id {} нет в базе", id);
-//            throw new NotFoundException("Фильм с id " + id + " нет в базе");
-//        } else {
-//            return film;
-//        }
     }
 
 
     @Override
     public Film update(Film film) {
         validateFilm(film);
-        getFilmById(film.getId());
-
         String sql = "update films set name = ?, description = ?, release_date = ?, duration = ?, rating_id = ? "
                 + "where id = ?";
-        jdbcTemplate.update(sql,
+
+        int count = jdbcTemplate.update(sql,
                 film.getName(),
                 film.getDescription(),
                 film.getReleaseDate(),
                 film.getDuration(),
                 film.getMpa().getId(),
                 film.getId());
+
+        if (count != 1) {
+            throw new NotFoundException("Невозможно обновить фильм с id= " + film.getId());
+        }
 
         if (film.getGenres() != null) {
             setGenres(film);
@@ -137,28 +129,6 @@ public class FilmDbStorage implements FilmStorage {
     public void deleteFilmById(Integer id) {
         String sql = "DELETE FROM films WHERE id = ?";
         jdbcTemplate.update(sql, id);
-    }
-
-    public void setGenres(Film film) {
-        Set<Genre> genreSet = new HashSet<>(film.getGenres());
-
-        jdbcTemplate.update("delete from film_genre where film_id = ?", film.getId());
-
-        genreSet = genreSet.stream()
-                .collect(Collectors.toSet());
-
-        List<Object[]> list = new ArrayList<>();
-
-        for (Genre genre : genreSet) {
-            Object[] values = new Object[]{film.getId(), genre.getId().intValue()};
-            list.add(values);
-        }
-
-        for (Object[] values : list) {
-            jdbcTemplate.update("insert into film_genre (film_id, genre_id) values (?, ?)", values);
-        }
-
-        film.setGenres(genreSet);
     }
 
     public void addLikeToFilm(Integer filmId, Integer userId) {
@@ -193,7 +163,29 @@ public class FilmDbStorage implements FilmStorage {
         return jdbcTemplate.query(sql, filmMapper, count);
     }
 
-    public void validateFilm(Film film) {
+    private void setGenres(Film film) {
+        Set<Genre> genreSet = new HashSet<>(film.getGenres());
+
+        jdbcTemplate.update("delete from film_genre where film_id = ?", film.getId());
+
+        genreSet = genreSet.stream()
+                .collect(Collectors.toSet());
+
+        List<Object[]> list = new ArrayList<>();
+
+        for (Genre genre : genreSet) {
+            Object[] values = new Object[]{film.getId(), genre.getId().intValue()};
+            list.add(values);
+        }
+
+        for (Object[] values : list) {
+            jdbcTemplate.update("insert into film_genre (film_id, genre_id) values (?, ?)", values);
+        }
+
+        film.setGenres(genreSet);
+    }
+
+    private void validateFilm(Film film) {
 
         LocalDate firstFilm = LocalDate.of(1895,12,28);
         int maxDescriptionLength = 200;
@@ -205,5 +197,10 @@ public class FilmDbStorage implements FilmStorage {
         }
     }
 
+    private boolean isFilmExist(Film film) {
+        String sql = "SELECT count(*) FROM films WHERE id = ?";
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class, film.getId());
+        return result != null && result == 1;
+    }
 
 }
