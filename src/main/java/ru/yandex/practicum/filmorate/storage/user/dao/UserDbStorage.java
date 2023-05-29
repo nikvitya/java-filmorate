@@ -82,10 +82,15 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User update(User user) {
-        getUser(user.getId());
         validateUser(user);
+
         String sqlQuery = "UPDATE users SET name = ?, email = ?, login = ?, birthday = ? WHERE id = ?";
-        jdbcTemplate.update(sqlQuery, user.getName(), user.getEmail(), user.getLogin(), user.getBirthday(), user.getId());
+        int count=  jdbcTemplate.update(sqlQuery, user.getName(), user.getEmail(), user.getLogin(), user.getBirthday(), user.getId());
+
+        if (count != 1) {
+            throw new NotFoundException("Невозможно обновить фильм с id= " + user.getId());
+        }
+
         log.info("Пользователь обновлен");
         return user;
     }
