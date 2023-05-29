@@ -23,7 +23,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.lang.String.format;
 
 @Component
 @Primary
@@ -73,7 +72,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public List<Film> showAll() {
-        String sql= "select * from films";
+        String sql = "select * from films";
 
         List<Film> allFilms = jdbcTemplate.query(sql,filmMapper);
         log.info("Получен запрос на показ всех фильмов.В базе {} фильмов.", allFilms.size());
