@@ -3,99 +3,66 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
+
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.Comparator;
+import ru.yandex.practicum.filmorate.storage.film.dao.FilmDbStorage;
+import ru.yandex.practicum.filmorate.storage.user.dal.UserStorage;
+
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Data
 @Slf4j
 public class FilmService {
-    private final FilmStorage inMemoryFilmStorage;
-    private final UserStorage inMemoryUserStorage;
+    private final FilmDbStorage filmDbStorage;
+    private final UserStorage userDbStorage;
 
-    public FilmService(FilmStorage inMemoryFilmStorage, UserStorage inMemoryUserStorage) {
-        this.inMemoryFilmStorage = inMemoryFilmStorage;
-        this.inMemoryUserStorage = inMemoryUserStorage;
+    public FilmService(FilmDbStorage filmDbStorage, UserStorage userDbStorage) {
+        this.filmDbStorage = filmDbStorage;
+        this.userDbStorage = userDbStorage;
     }
 
     public List<Film> showAll() {
-       return inMemoryFilmStorage.showAll();
-    }
-
-    public Film create(Film film) {
-        return inMemoryFilmStorage.create(film);
-    }
-
-    public Film update(Film film) {
-        return inMemoryFilmStorage.update(film);
-    }
-
-    public Film deleteFilmById(Integer id) {
-        return inMemoryFilmStorage.deleteFilmById(id);
-    }
-
-    public void deleteAll() {
-        inMemoryFilmStorage.deleteAll();
+       return filmDbStorage.showAll();
     }
 
     public Film getFilmById(Integer id) {
-        return inMemoryFilmStorage.getFilmById(id);
+        return filmDbStorage.getFilmById(id);
+    }
+
+    public Film create(Film film) {
+        return filmDbStorage.create(film);
+    }
+
+    public Film update(Film film) {
+        return filmDbStorage.update(film);
+    }
+
+    public void deleteFilmById(Integer id) {
+        filmDbStorage.deleteFilmById(id);
+    }
+
+    public void deleteAll() {
+        filmDbStorage.deleteAll();
     }
 
     public User getUserById(Integer userId) {
-        return inMemoryUserStorage.getUserById(userId);
+        return userDbStorage.getUserById(userId);
     }
 
     public void addLike(Integer id, Integer userId) {
-        Film film = getFilmById(id);
-        User user = getUserById(userId);
-
-        if (film == null) {
-            log.warn("Фильму невозможно добавить like , фильма с id={} нет в базе", id);
-            throw new NotFoundException("Фильм с id=" + id + " нет в базе");
-        }
-
-        if (user == null) {
-            log.warn("Фильму невозможно добавить like , пользователя с userId={} нет в базе", userId);
-            throw new NotFoundException("Пользователя с userId=" + id + " нет в базе");
-
-        }
-
-        film.getUserIdsWhoPutLike().add(userId);
-
+        filmDbStorage.addLikeToFilm(id,userId);
     }
 
     public void deleteLike(Integer id, Integer userId) {
-        Film film = getFilmById(id);
-        User user = getUserById(userId);
-
-        if (film == null) {
-            log.warn("Фильму невозможно удалить like , фильма с id={} нет в базе", id);
-            throw new NotFoundException("Фильм с id=" + id + " нет в базе");
-        }
-
-        if (user == null) {
-            log.warn("Фильму невозможно удалить like , пользователя с userId={} нет в базе", userId);
-            throw new NotFoundException("Пользователя с userId=" + id + " нет в базе");
-
-        }
-
-        film.getUserIdsWhoPutLike().remove(userId);
+        filmDbStorage.deleteLike(id,userId);
 
     }
 
     public List<Film> getTop10PopularFilms(Integer count) {
-
-       return inMemoryFilmStorage.showAll().stream()
-               .sorted(Comparator.comparing((Film film) -> film.getUserIdsWhoPutLike().size()).reversed())
-               .limit(count)
-               .collect(Collectors.toList());
+        return filmDbStorage.sortByLikes(count);
     }
 }

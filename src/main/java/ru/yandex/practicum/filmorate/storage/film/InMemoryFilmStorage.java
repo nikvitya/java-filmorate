@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.film.dal.FilmStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,6 +30,16 @@ public class InMemoryFilmStorage implements FilmStorage {
     public List<Film> showAll() {
         log.info("Получен запрос на показ всех фильмов.В базе {} фильмов.", films.size());
         return new ArrayList<>(films.values());
+    }
+
+    @Override
+    public Film getFilmById(Integer id) {
+        if (!films.containsKey(id)) {
+            log.warn("Фильм невозможно получить , id {} нет в базе", id);
+            throw new NotFoundException("Фильм с id " + id + " нет в базе");
+        }
+
+        return films.get(id);
     }
 
     @Override
@@ -75,24 +86,16 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film deleteFilmById(Integer id) {
+    public void deleteFilmById(Integer id) {
         if (!films.containsKey(id)) {
             log.warn("Фильм невозможно удалить , id {} нет в базе", id);
             throw new NotFoundException("Фильм с id " + id + " нет в базе");
         }
 
-        return films.remove(id);
+        //return films.remove(id);
     }
 
-    @Override
-    public Film getFilmById(Integer id) {
-        if (!films.containsKey(id)) {
-            log.warn("Фильм невозможно обновить , id {} нет в базе", id);
-            throw new NotFoundException("Фильм с id " + id + " нет в базе");
-        }
 
-        return films.get(id);
-    }
 
 
 }
