@@ -32,8 +32,6 @@ public class UserDbStorage implements UserStorage {
         this.userMapper = userMapper;
     }
 
-
-
     @Override
     public User create(User user) {
         validateUser(user);
