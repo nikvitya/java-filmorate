@@ -1,6 +1,7 @@
 # java-filmorate
 Схема базы данных:  
-![java-filmorate](https://github.com/nikvitya/java-filmorate/assets/119168580/13c0b4cb-d899-4393-914c-bf0d72e38aef)
+![java-filmorate2](https://github.com/nikvitya/java-filmorate/assets/119168580/ef43c9ae-f3bd-4482-8751-8ff3eeb2ce22)
+
 
 
 
