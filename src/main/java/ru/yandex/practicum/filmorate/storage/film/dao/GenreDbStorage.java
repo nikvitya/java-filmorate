@@ -56,8 +56,8 @@ public class GenreDbStorage implements GenreStorage {
                 "WHERE fg.film_id = ?";
 
         return new HashSet<>(jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Integer genreId = rs.getInt("id");
-            String genreName = rs.getString("name");
+            Integer genreId = rs.getInt("genres.id");
+            String genreName = rs.getString("genres.name");
             return new Genre(genreId, genreName);
         }, id));
     }
