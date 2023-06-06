@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.user;
+package ru.yandex.practicum.filmorate.storage.user.dal;
 
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -7,16 +7,16 @@ import java.util.List;
 
 public interface UserStorage {
 
+    User create(User user);
+
     List<User> showAll();
 
-    User create(User user);
+    User getUserById(Integer id);
 
     User update(User user);
 
     void deleteAll();
 
-    User deleteUserById(Integer id);
-
-    User getUserById(Integer id);
+    void deleteUserById(Integer id);
 
 }

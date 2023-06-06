@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.user.dal.UserStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -80,14 +81,14 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User deleteUserById(Integer id) {
+    public void deleteUserById(Integer id) {
 
         if (!users.containsKey(id)) {
             log.warn("Пользователя невозможно удалить , id= {} нет в базе", id);
             throw new NotFoundException("Пользователя с id=" + id + " нет в базе");
         }
 
-        return users.remove(id);
+       users.remove(id);
 
     }
 
