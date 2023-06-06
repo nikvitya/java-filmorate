@@ -57,6 +57,8 @@ public class FilmDbStorage implements FilmStorage {
             return prepareStatement;
         }, keyHolder);
 
+        //jdbcTemplate.update(sql,film.getName(), film.getDescription(),film.getReleaseDate(),film.getDuration(),film.getMpa().getId());
+
         if (keyHolder.getKey() != null) {
             film.setId(keyHolder.getKey().intValue());
         }
@@ -134,7 +136,7 @@ public class FilmDbStorage implements FilmStorage {
     public void addLikeToFilm(Integer filmId, Integer userId) {
         userDbStorage.getUserById(userId);
         getFilmById(filmId);
-        String sql = "insert into film_likes (film_id, user_id) " + "values(?, ?)";
+        String sql = "insert into film_likes (film_id, user_id) values(?, ?)";
 
         jdbcTemplate.update(sql, filmId, userId);
     }
